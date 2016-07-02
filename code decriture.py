@@ -3,14 +3,11 @@
 '''
 Auteur: Olivier Bernard & Gabriel Desharnais
 Date : 26 avril 2016
-
 Entree: Clavier
 Sortie: Moniteur
-
 Programme: Programme pour ecrire des fichiers
            Programme pour lire des fichiers
            Programme pour tracer un graphique avec deux variables
-
 '''
 
 import numpy as np
@@ -218,11 +215,8 @@ def graphique():
     plt.show()
 
     main() # retour au main    
+    
 
-def aide():
-    print("Ceci est le menu d'aide")
-    
-    
 def quiter():
     exit()
 
@@ -233,10 +227,9 @@ def main():
         'E':ecriture,
         'L':lecture,
         'G':graphique,
-        'A':aide,
         'Q':quiter
         }
-    commande= input("Que voulez-vous faire (E: Ecrire un fichier, L: Lire un fichier, G: tracer de graphique, A: aide, Q: arret du programme): ")
+    commande= input("Que voulez-vous faire (E: Ecrire un fichier, L: Lire un fichier, G: tracer de graphique, Q: arret du programme): ")
     try:
         menu[commande.upper()]()        #Ceci cherche dans le dictionnaire une fonction répertorier sous le nom de commande et essai de l'exécuter
     except KeyError:
