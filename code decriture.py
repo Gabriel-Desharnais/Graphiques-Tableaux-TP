@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 #-utf-8
 '''
 Auteur: Olivier Bernard & Gabriel Desharnais
