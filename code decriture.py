@@ -24,6 +24,7 @@ def ecriture ():
     except ValueError:
         print("Il y a une erreur, veuillez entrez un nombre entier")                               #S'assurer que le nombre est valide
         nb_liste = int(input("Entrer le nombre de variable à entrer dans le fichier: "))
+    fd=open(nom_fichier , "w")
    #l'ensemble du reste du code devrait se servir de tableau numpy
     if int(nb_liste) <= 3 :
         try:
@@ -44,7 +45,6 @@ def ecriture ():
         liste3 = []
        
         #ecriture des noms dans le fichier
-        fd=open(nom_fichier , "w")
         fd.write(str(nom1) + "         " + str(nom2) )
         #fd.write(str(nom2) + "         ")
 
@@ -122,7 +122,6 @@ def ecriture ():
         nb_3 = 0
         liste_nom = []
         
-        fd=open(nom_fichier , "w")
     
         while nb_titre < int(nb_liste):
             nom_n = input("Entrer le nom de la nième variable :")
