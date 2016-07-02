@@ -24,136 +24,37 @@ def ecriture ():
     except ValueError:
         print("Il y a une erreur, veuillez entrez un nombre entier")                               #S'assurer que le nombre est valide
         nb_liste = int(input("Entrer le nombre de variable à entrer dans le fichier: "))
-    fd=open(nom_fichier , "w")
+    colonnes=nb_liste+1
+    
    #l'ensemble du reste du code devrait se servir de tableau numpy
     if int(nb_liste) <= 3 :
+        #devrait être dans une boucle
         try:
             nb_donnee = int(input("Entrer le nombre de donnees à entrer :"))
         except ValueError:
             print("Il y a une erreur, veuillez entrez un nombre entier")
             nb_donnee = int(input("Entrer le nombre de donnees à entrer :"))
         
-        #Nom des variables
-        nom1 = input("Entrer le nom de la première variable :")
-        nom2 = input("Entrer le nom de la seconde variable :")
-
-        if int(nb_liste) == 3:
-            nom3 = input("Entrer le nom de la troisième variable :")
+        lignes=nb_donnee+1                                  #+1 pour la ligne de titre
+        tableau=np.empty((lignes,colonnes),dtype=object)         #Création d'un tableau numpy pouvant contenir des chaines de charactères et étant du bon format
         
-        liste1 = []
-        liste2 = []
-        liste3 = []
+        #donner un nom pour chaque colonne du tableau
+        print("\nVous devez donner un nom à chaqu'une des",colonnes,"colonnes\n")
+        for n in range(colonnes):
+            tableau[0,n]=input("Le nom de la colonne "+str(n)+"\n: ")
        
-        #ecriture des noms dans le fichier
-        fd.write(str(nom1) + "         " + str(nom2) )
-        #fd.write(str(nom2) + "         ")
-
-        if int(nb_liste)>2 and int(nb_liste) == 3:
-            fd.write(str(nom3) + "         ")
-     
-        fd.write("\n")
- 
-        nb = 0
-        nb2 = 0
-        nb3 = 0
         
-        #Entrees des données ainsi que leur écriture dans le fichier
-        while nb < int(nb_donnee):
-            try:
-                donnee1 = float(input("Entrer la prochaine valeur de la variable" +" "+ nom1 + ": "))
-            except ValueError:
-                print("Il y a une erreur, veuillez entrez un nombre")
-                donnee1 = float(input("Entrer la prochaine valeur de la variable" +" "+ nom1 + ": "))
+        #Entrees des données dans le tableau
+        for l in range(1,lignes):
+            for c in range(colonnes):
+                tableau[l,c]=input("Entrez la valeur "+str(l)+" de la variable "+tableau[0,c]+": ")
                 
-            liste1.append(float(donnee1))
-            nb+=1
-        
-        while nb2 < int(nb_donnee):
-            try:
-                donnee2 = float(input("Entrer la prochaine valeur de la variable" +" " + nom2 + ": "))
-            except ValueError:
-                print("Il y a une erreur, veuillez entrez un nombre")
-                donnee2 = float(input("Entrer la prochaine valeur de la variable" +" "+ nom2 + ": "))
-                
-            liste2.append(float(donnee2))
-            nb2+=1
-        
-        #Nous avons un minimum de 2 variables. Donc pour 2 ou 3 variables le programme reste tres conviviale
-        if int(nb_liste)>2 and int(nb_liste) == 3:
-            while nb3 < int(nb_donnee):
-                try:
-                    donnee3 = float(input("Entrer la prochaine valeur de la variable" + " " + nom3 + ": "))
-                except ValueError:
-                    print("Il y a une erreur, veuillez entrez un nombre")
-                    donnee3 = float(input("Entrer la prochaine valeur de la variable" +" "+ nom3 + ": "))
-                    
-                liste3.append(float(donnee3))
-                nb3+=1
         
         #ecriture des données dans le fichiers
-        if int(nb_liste) == 3:
-            for i in range (int(nb_donnee)):
-                fd.write(str(liste1[i]) + "         " + str(liste2[i]) +  "         " + str(liste3[i]) +  "\n")
-
-        if int(nb_liste) == 2:
-            for i in range (int(nb_donnee)):
-                fd.write(str(liste1[i]) + "         " + str(liste2[i])+ "\n")
-
-        print(nom1, liste1)
-        print(nom2, liste2)
-        if int(nb_liste) == 3:
-            print(nom3, liste3)
-            
-                
-        fd.close()
+        np.savetxt(nom_fichier,tableau,fmt="%s")           #ecrit le tableau en chaines de charactères dans un fichier 
+        
         print ("Votre est enregistre sous le nom <<" + nom_fichier + ">>  dans le même répertoir qu'où le code se situe")
 
-
-    #Écriture du fichier avec plus de 3 variables différentes
-    if int(nb_liste) > 3 :
-        #nombre de données à entrer par variable
-        try:
-            nb_donnee_n = float(input("Entrer le nombre de données à entrer :")) #nobre de données pour chaque variable
-        except ValueError:
-            print("Il y a une erreur, veuillez entrez un nombre")
-            nb_donnee_n = float(input("Entrer le nombre de données à entrer :"))
-
-        nb_titre = 0
-        nb_3 = 0
-        liste_nom = []
-        
-    
-        while nb_titre < int(nb_liste):
-            nom_n = input("Entrer le nom de la nième variable :")
-            liste_nom.append(nom_n) #Mise en mémoire des noms des variables
-            nb_titre += 1
-        #Écriture des noms des variables dans le fichier        
-        for i in range (int(nb_liste)):
-            fd.write(str(liste_nom[i]) + "         ")
-
-        fd.write("\n")  
-
-        while nb_3 < int(nb_donnee_n):
- 
-            nb_4=0
-            i=0
-        
-            while nb_4 < int(nb_liste):
-                try:
-                    donnee_n = float(input("Entrer la prochaine valeur de la variable" + " " + liste_nom[i] + ": "))
-                except ValueError:
-                    print("Il y a une erreur, veuillez entrez un nombre")
-                    donnee_n = float(input("Entrer la prochaine valeur de la variable" + " " + liste_nom[i] + ": "))
-        
-                fd.write(str(float(donnee_n)) + "         ")
-                i +=1
-                nb_4 +=1
-            
-            fd.write("\n" )
-            nb_3 += 1
-
-    fd.close()
-    print ("Le document" +" " + nom_fichier + " est enregistre sous le nom <<" + nom_fichier + ">>  dans le même répertoir qu'où le code se situe")
 
     
 
