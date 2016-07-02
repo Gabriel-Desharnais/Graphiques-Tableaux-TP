@@ -156,7 +156,6 @@ def ecriture ():
     fd.close()
     print ("Le document" +" " + nom_fichier + " est enregistre sous le nom <<" + nom_fichier + ">>  dans le même répertoir qu'où le code se situe")
 
-    main() #retour au main
     
 
 #Lecture d'une fichier
