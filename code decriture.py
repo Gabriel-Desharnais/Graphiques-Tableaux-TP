@@ -236,6 +236,6 @@ def main():
         menu[commande.upper()]()        #Ceci cherche dans le dictionnaire une fonction répertorier sous le nom de commande et essai de l'exécuter
     except KeyError:
         print("Vous n'avez pas entré une option valide.")
-        
+    main()
 if __name__ == '__main__':
   main()   
