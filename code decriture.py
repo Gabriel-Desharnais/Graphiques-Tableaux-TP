@@ -17,14 +17,14 @@ import sys
 import unicodedata
 VERSION="0.0.0.0.0.0.2"
 def ecriture ():
-    nom_fichier = input("Entrer le nom que vous desirez donner au fichier : ") #nom attribué au fichier
-
+    nom_fichier = input("Entrer le nom que vous desirez donner au fichier : ") #nom attribué au fichier qui sera écrit
+#Le <<try / except>> devrait être remplacer par une boucle qui vérifie que le nombre est convenable
     try:
         nb_liste = int((input("Entrer le nombre de variable à entrer dans le fichier : "))) #nombre de variable qui vont être ecrite
     except ValueError:
-        print("Il y a une erreur, veuillez entrez un nombre entier")
+        print("Il y a une erreur, veuillez entrez un nombre entier")                               #S'assurer que le nombre est valide
         nb_liste = int(input("Entrer le nombre de variable à entrer dans le fichier: "))
-   
+   #l'ensemble du reste du code devrait se servir de tableau numpy
     if int(nb_liste) <= 3 :
         try:
             nb_donnee = int(input("Entrer le nombre de donnees à entrer :"))
