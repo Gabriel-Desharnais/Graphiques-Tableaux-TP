@@ -15,7 +15,7 @@ from scipy.optimize import curve_fit
 from matplotlib import pyplot as plt
 import sys
 import unicodedata
-
+VERSION="0.0.0.0.0.0.2"
 def ecriture ():
     nom_fichier = input("Entrer le nom que vous desirez donner au fichier : ") #nom attribué au fichier
 
@@ -217,8 +217,10 @@ def graphique():
     main() # retour au main    
 
 def aide():
-    print("Ceci est le menu d'aide")
-    
+    print("Ceci est le menu d'aide\n")
+    print("La version du logiciel: ",VERSION,"\n")
+    print("Ce programme permet à l'utilisateur d'importer les données de différentes manières et d'en faire des tableaux ou des graphiques \n")
+    print("Pour Importer vos données depuis un fichier: choisisez l'option 'L' dans le menu principal")        
     
 def quiter():
     exit()
