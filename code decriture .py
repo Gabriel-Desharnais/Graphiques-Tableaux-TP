@@ -1,12 +1,12 @@
 #-utf-8
 '''
-Auteur: Olivier Bernard
+Auteur: Olivier Bernard & Gabriel Desharnais
 Date : 26 avril 2016
 
 Entree: Clavier
 Sortie: Moniteur
 
-Programme: Programmepour ecrire des fichiers
+Programme: Programme pour ecrire des fichiers
            Programme pour lire des fichiers
            Programme pour tracer un graphique avec deux variables
 
@@ -219,27 +219,23 @@ def graphique():
     main() # retour au main    
     
 
+def quiter():
+    exit()
+
 #main, choix entre les différentes options
 def main():
-    commande= input("Que voulez-vous faire (E: Ecrire un fichier, L: Lire un fichier, G: tracer de graphique, S: arret du programme): ")
-
-    if (commande == 'E' or commande == 'e' ) :
-        ecriture()
-
-    if (commande == 'L' or commande == 'l' ):
-        lecture()
-
-    if (commande == 'G' or commande == 'g' ):
-        graphique()
-
-    if (commande == 'S' or commande == 's'):
-        sys.exit()
-       
-
-    if not commande == 'E' and commande == 'e' and commande == 'L' and commande == 'l':
-        print("Veuillez choisir une des deux options de ce programme s'il-vous-plaît")
-        commande= input("Que voulez-vous faire ? (E: Ecrire un fichier, L: Lire un fichier) :")
+    #Créer le menu à l'aide d'un dictionnaire qui contient les fonctions
+    menu={
+        'E':ecriture,
+        'L':lecture,
+        'G':graphique,
+        'Q':quiter
+        }
+    commande= input("Que voulez-vous faire (E: Ecrire un fichier, L: Lire un fichier, G: tracer de graphique, Q: arret du programme): ")
+    try:
+        menu[commande.upper()]()        #Ceci cherche dans le dictionnaire une fonction répertorier sous le nom de commande et essai de l'exécuter
+    except KeyError:
+        print("Vous n'avez pas entré une option valide.")
         
-
 if __name__ == '__main__':
   main()   
