@@ -218,8 +218,11 @@ def graphique():
     plt.show()
 
     main() # retour au main    
-    
 
+def aide():
+    print("Ceci est le menu d'aide")
+    
+    
 def quiter():
     exit()
 
@@ -230,9 +233,10 @@ def main():
         'E':ecriture,
         'L':lecture,
         'G':graphique,
+        'A':aide,
         'Q':quiter
         }
-    commande= input("Que voulez-vous faire (E: Ecrire un fichier, L: Lire un fichier, G: tracer de graphique, Q: arret du programme): ")
+    commande= input("Que voulez-vous faire (E: Ecrire un fichier, L: Lire un fichier, G: tracer de graphique, A: aide, Q: arret du programme): ")
     try:
         menu[commande.upper()]()        #Ceci cherche dans le dictionnaire une fonction répertorier sous le nom de commande et essai de l'exécuter
     except KeyError:
