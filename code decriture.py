@@ -16,12 +16,35 @@ from matplotlib import pyplot as plt
 import sys
 import unicodedata
 VERSION="0.0.0.0.0.0.2"
+def question(question_a_afficher,type_de_donnees):
+    while True:
+        a=input(question_a_afficher)
+        if type(0)==type_de_donnees:
+            try:
+                a=int(a)
+                return a
+            except ValueError:
+                pass
+        elif type(0.0)==type_de_donnees:
+            try:
+                a=float(a)
+                return a
+            except ValueError:
+                pass
+        elif type('sa')==type_de_donnees:
+            try:
+                a=str(a)
+                return a
+            except ValueError:
+                pass
+        else:
+            raise Exception("type de données inconnu")
 def ecriture ():
     nom_fichier = input("Entrer le nom que vous desirez donner au fichier : ") #nom attribué au fichier qui sera écrit
     
     #Le <<try / except>> devrait être remplacer par une boucle qui vérifie que le nombre est convenable
     try:
-        nb_liste = int((input("Entrer le nombre de variable à entrer dans le fichier : "))) #nombre de variable qui vont être ecrite
+        nb_liste = question("Entrer le nombre de variable à entrer dans le fichier : ",type(0)) #nombre de variable qui vont être ecrite
     except ValueError:
         print("Il y a une erreur, veuillez entrez un nombre entier")                               #S'assurer que le nombre est valide
         nb_liste = int(input("Entrer le nombre de variable à entrer dans le fichier: "))
