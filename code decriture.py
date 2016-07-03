@@ -16,38 +16,40 @@ from matplotlib import pyplot as plt
 import sys
 import unicodedata
 VERSION="0.0.0.0.0.0.2"
-def question(question_a_afficher,type_de_donnees):
+def question(question_a_afficher,type_de_donnees,compteur=2,annuler=True):
     while True:
+        compteur-=1
         a=input(question_a_afficher)
         if type(0)==type_de_donnees:
             try:
                 a=int(a)
                 return a
             except ValueError:
-                pass
+                print("Vous devez entrer un entier.")
         elif type(0.0)==type_de_donnees:
             try:
                 a=float(a)
                 return a
             except ValueError:
-                pass
+                print("Vous devez entrer un nombre à virgule flotante.")
         elif type('sa')==type_de_donnees:
             try:
                 a=str(a)
                 return a
             except ValueError:
-                pass
+                print("Vous devez entrer une chaîne de charactères.")
         else:
             raise Exception("type de données inconnu")
+        if compteur==0:
+            compteur=1
+            b=input('Voulez vous annuler le procéssus en cours? Entrez <<c>> pour annuler :')
+            if b.upper()=="C":
+                raise Exception("Annulation du procéssus par l'utilisateur")
 def ecriture ():
     nom_fichier = input("Entrer le nom que vous desirez donner au fichier : ") #nom attribué au fichier qui sera écrit
     
     #Le <<try / except>> devrait être remplacer par une boucle qui vérifie que le nombre est convenable
-    try:
-        nb_liste = question("Entrer le nombre de variable à entrer dans le fichier : ",type(0)) #nombre de variable qui vont être ecrite
-    except ValueError:
-        print("Il y a une erreur, veuillez entrez un nombre entier")                               #S'assurer que le nombre est valide
-        nb_liste = int(input("Entrer le nombre de variable à entrer dans le fichier: "))
+    nb_liste = question("Entrer le nombre de variable à entrer dans le fichier : ",type(0)) #nombre de variable qui vont être ecrite
     colonnes=nb_liste+1
     
     #Le <<try / except>> devrait être remplacer par une boucle qui vérifie que le nombre est convenable
@@ -162,6 +164,9 @@ def main():
         menu[commande.upper()]()        #Ceci cherche dans le dictionnaire une fonction répertorier sous le nom de commande et essai de l'exécuter
     except KeyError:
         print("Vous n'avez pas entré une option valide.")
+    except Exception as e:
+        pass
+        #e.args              # arguments stored in .args
     main()
 if __name__ == '__main__':
   main()   
