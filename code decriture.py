@@ -16,13 +16,23 @@ from matplotlib import pyplot as plt
 import sys
 import unicodedata
 VERSION="0.0.0.0.0.0.2"
-def question(question_a_afficher,type_de_donnees,compteur=2,annuler=True):
+def question(question_a_afficher,type_de_donnees,compteur=2,limites=-1,default=''):
     """Cette fonction permet d'éffectuer une requête d'entrée à l'instar de <<input>>
-    sauf qu'elle retourne la réponse dans le type demandé en argument"""
+    sauf qu'elle retourne la réponse dans le type demandé en argument. Elle permet
+    aussi de définir un nombre seuil, une fois ce seuil dépasser elle demmandera si
+    l'utilisateur veut annuler la tâche en cours(entrer un nombre négatif pour 
+    désactiver cette fonction). Elle permet aussi d'imposer un nombre limites de
+    tentatives après quoi elle annulera la tâche en cours (entrer un ombre négatif pour
+    désactiver cette fonction). Elle permet aussi d'ajouter une valeur par défault si
+    l'utilisateur entre une valeur vide<<''>>, alors c'est cette valeur qui sera considéré
+    comme entrée."""
     while True:
         compteur-=1
+        limites-=1
         a=input(question_a_afficher)
-        if type(0)==type_de_donnees:
+        if a=='':
+            a = default
+        if type(0)==type_de_donnees:  
             try:
                 a=int(a)
                 return a
@@ -47,6 +57,9 @@ def question(question_a_afficher,type_de_donnees,compteur=2,annuler=True):
             b=input('Voulez vous annuler le procéssus en cours? Entrez <<c>> pour annuler :')
             if b.upper()=="C":
                 raise Exception("Annulation du procéssus par l'utilisateur")
+        if limites == 0:
+            #Ici un jour on devrait ajouter de quoi qui permet d'envoyer la valeur par défaut au lieu de juste annuler
+            raise Exception("Annulation du procéssus (nombre limites de tentatives atteinte)")
 def ecriture ():
     nom_fichier = question("Entrer le nom que vous desirez donner au fichier : ",type('')) #nom attribué au fichier qui sera écrit
     
