@@ -16,23 +16,44 @@ from matplotlib import pyplot as plt
 import sys
 import unicodedata
 VERSION="0.0.0.0.0.0.2"
+def question(question_a_afficher,type_de_donnees,compteur=2,annuler=True):
+    """Cette fonction permet d'éffectuer une requête d'entrée à l'instar de <<input>>
+    sauf qu'elle retourne la réponse dans le type demandé en argument"""
+    while True:
+        compteur-=1
+        a=input(question_a_afficher)
+        if type(0)==type_de_donnees:
+            try:
+                a=int(a)
+                return a
+            except ValueError:
+                print("Vous devez entrer un entier.")
+        elif type(0.0)==type_de_donnees:
+            try:
+                a=float(a)
+                return a
+            except ValueError:
+                print("Vous devez entrer un nombre à virgule flotante.")
+        elif type('sa')==type_de_donnees:
+            try:
+                a=str(a)
+                return a
+            except ValueError:
+                print("Vous devez entrer une chaîne de charactères.")
+        else:
+            raise Exception("type de données inconnu")
+        if compteur==0:
+            compteur=1
+            b=input('Voulez vous annuler le procéssus en cours? Entrez <<c>> pour annuler :')
+            if b.upper()=="C":
+                raise Exception("Annulation du procéssus par l'utilisateur")
 def ecriture ():
-    nom_fichier = input("Entrer le nom que vous desirez donner au fichier : ") #nom attribué au fichier qui sera écrit
+    nom_fichier = question("Entrer le nom que vous desirez donner au fichier : ",type('')) #nom attribué au fichier qui sera écrit
     
-    #Le <<try / except>> devrait être remplacer par une boucle qui vérifie que le nombre est convenable
-    try:
-        nb_liste = int((input("Entrer le nombre de variable à entrer dans le fichier : "))) #nombre de variable qui vont être ecrite
-    except ValueError:
-        print("Il y a une erreur, veuillez entrez un nombre entier")                               #S'assurer que le nombre est valide
-        nb_liste = int(input("Entrer le nombre de variable à entrer dans le fichier: "))
+    nb_liste = question("Entrer le nombre de variable à entrer dans le fichier : ",type(0)) #nombre de variable qui vont être ecrite
     colonnes=nb_liste+1
     
-    #Le <<try / except>> devrait être remplacer par une boucle qui vérifie que le nombre est convenable
-    try:
-        nb_donnee = int(input("Entrer le nombre de donnees à entrer :"))
-    except ValueError:
-        print("Il y a une erreur, veuillez entrez un nombre entier")
-        nb_donnee = int(input("Entrer le nombre de donnees à entrer :"))
+    nb_donnee = question("Entrer le nombre de donnees à entrer :",type(0))
         
     lignes=nb_donnee+1                                              #+1 pour la ligne de titre
     tableau=np.empty((lignes,colonnes),dtype=object)                #Création d'un tableau numpy pouvant contenir des chaines de charactères et étant du bon format
@@ -40,15 +61,13 @@ def ecriture ():
     #donner un nom pour chaque colonne du tableau
     print("\nVous devez donner un nom à chaqu'une des",colonnes,"colonnes\n")
     for n in range(colonnes):
-        tableau[0,n]=input("Le nom de la colonne "+str(n)+"\n: ")
-      
+        tableau[0,n]=question("Le nom de la colonne "+str(n)+"\n: ",type(''))
     
     #Entrees des données dans le tableau
     for l in range(1,lignes):
         for c in range(colonnes):
-            tableau[l,c]=input("Entrez la valeur "+str(l)+" de la variable "+tableau[0,c]+": ")
-        
-        
+            tableau[l,c]=question("Entrez la valeur "+str(l)+" de la variable "+tableau[0,c]+": ",type(''))
+
     #ecriture des données dans le fichiers
     np.savetxt(nom_fichier,tableau,fmt="%s",delimiter=',')           #ecrit le tableau en chaines de charactères dans un fichier 
     
@@ -60,59 +79,47 @@ def ecriture ():
 #Lecture d'une fichier
 def lecture():
     print("Vous ne pouvez ouvrir que des fichier txt ou sans extensions avec ce programme")
-    nom_doc = input("Entrez le nom complet (avec l'extension) du ficihier que vous voulez lire :")
+    nom_doc = question("Entrez le nom complet (avec l'extension) du ficihier que vous voulez lire :",type(''))
 
     gd = open(nom_doc, 'r')
     print(gd.read())
     gd.close()
     
-    graph = input("Voulez vous en faire une graphique (O: Oui, N: Non) :")
+    graph = question("Voulez vous en faire une graphique (O: Oui, N: Non) :",type(''))
     
-    if graph == 'O' or graph == 'o':
+    if graph.upper() == 'O':
         graphique()
 
-    if graph == 'N' or graph == 'n':
-        main() # retour au main
-        
 #Tracer de graphique
 def graphique():
 
-    nom_doc = input("Entrez le nom complet (avec l'extension) du fichier dont vous voulez faire un graphique :")
+    nom_doc = question("Entrez le nom complet (avec l'extension) du fichier dont vous voulez faire un graphique :",type(''))
 
     gd = open(nom_doc, 'r')
     print(gd.read())
     gd.close()
   
-    saut= input("Combien de ligne désirez vous sauter (combien de ligne ne sont pas des données) :")
+    saut= question("Combien de ligne désirez vous sauter (combien de ligne ne sont pas des données) :",type(''))
     var =np.loadtxt(nom_doc,skiprows= int(saut) ,unpack=True)
       
-    try:
-         x = int(input("Entrez le numéros de la colonne qui sera la composante X du graphique :"))
-    except ValueError:
-         print("Il y a une erreur, veuillez le numéros de la variable")
-         x = int(input("Entrez le numéros de la colonne qui sera la composante X du graphique :"))
+    x = question("Entrez le numéros de la colonne qui sera la composante X du graphique :",type(0))
 
-    try:
-         y = int(input("Entrez le numéros de la colonne qui sera la composante Y du graphique :"))
-    except ValueError:
-         print("Il y a une erreur, veuillez entrer le numéros de la variable")
-         y = int(input("Entrez le numéros de la colonne qui sera la composante Y du graphique :"))
-
+    y =question("Entrez le numéros de la colonne qui sera la composante Y du graphique :",type(0))
+   
     varx = var[x-1]
     vary = var[y-1]
-    axe_x = input("Entrer le titre de l'axe des x :")
-    axe_y = input("Entrer le titre de l'axe des y :")
+    axe_x =question("Entrer le titre de l'axe des x :",type(''))
+    axe_y = question("Entrer le titre de l'axe des y :",type(''))
     
     
     plt.plot(varx, vary)
     plt.xlabel(axe_x)
     plt.ylabel(axe_y)
        
-    nom_graph = input ("Entrer le nom du graphique :")
-    plt.savefig(nom_graph+'.png')
-    plt.show()
+    nom_graph = question("Entrer le nom du graphique :",type(''))
+    plt.savefig(nom_graph+'.png')               #Enregitre une image <<PNG>> du graphique
+    plt.show()                                  #Affiche le graphique
 
-    main() # retour au main    
 
 def aide():
     print("Ceci est le menu d'aide\n")
@@ -139,6 +146,9 @@ def main():
         menu[commande.upper()]()        #Ceci cherche dans le dictionnaire une fonction répertorier sous le nom de commande et essai de l'exécuter
     except KeyError:
         print("Vous n'avez pas entré une option valide.")
+    except Exception as e:
+        pass
+        #e.args              # arguments stored in .args
     main()
 if __name__ == '__main__':
   main()   
