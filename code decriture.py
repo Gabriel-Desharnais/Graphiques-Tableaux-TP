@@ -15,7 +15,7 @@ from scipy.optimize import curve_fit
 from matplotlib import pyplot as plt
 import sys
 import unicodedata
-VERSION="0.0.0.0.0.0.3"
+VERSION="0.0.0.0.0.0.2"
 def ecriture ():
     nom_fichier = input("Entrer le nom que vous desirez donner au fichier : ") #nom attribué au fichier qui sera écrit
     
