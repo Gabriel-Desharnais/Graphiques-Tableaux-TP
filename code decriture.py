@@ -26,6 +26,7 @@ def question(question_a_afficher,type_de_donnees,compteur=2,limites=-1,default='
     désactiver cette fonction). Elle permet aussi d'ajouter une valeur par défault si
     l'utilisateur entre une valeur vide<<''>>, alors c'est cette valeur qui sera considéré
     comme entrée."""
+    #On devrait ajouter un truc qui permet de choisir comme type par défault string
     while True:
         compteur-=1
         limites-=1
@@ -60,32 +61,49 @@ def question(question_a_afficher,type_de_donnees,compteur=2,limites=-1,default='
         if limites == 0:
             #Ici un jour on devrait ajouter de quoi qui permet d'envoyer la valeur par défaut au lieu de juste annuler
             raise Exception("Annulation du procéssus (nombre limites de tentatives atteinte)")
-def ecriture ():
-    nom_fichier = question("Entrer le nom que vous desirez donner au fichier : ",type('')) #nom attribué au fichier qui sera écrit
+
+def creer_tableau():
+    """Cette fonction ajoute un tableau au dictionnaire tableaux."""
     
-    nb_liste = question("Entrer le nombre de variable à entrer dans le fichier : ",type(0)) #nombre de variable qui vont être ecrite
-    colonnes=nb_liste+1
+    #Le nom donnée par l'utilisateur servira à nommée le tableau à l'interne
+    nom_tableau = question("Entrer le nom que vous desirez donner au tableau : ",type(''))
     
-    nb_donnee = question("Entrer le nombre de donnees à entrer :",type(0))
-        
-    lignes=nb_donnee+1                                              #+1 pour la ligne de titre
-    tableau=np.empty((lignes,colonnes),dtype=object)                #Création d'un tableau numpy pouvant contenir des chaines de charactères et étant du bon format
-        
-    #donner un nom pour chaque colonne du tableau
+    #L'utilisateur doit spécifié le nombre de colonnes et de lignes que doit contenir le tableau (plus tard ça vaudrait la peine de rendre ça facultatif)
+    colonnes = question("Entrer le nombre de colonnes du tableau : ",type(0))
+    lignes = question("Entrer le nombre de lignes du tableau (La ligne titre ne compte pas) :",type(0))+1
+    
+    #Création d'un tableau numpy pouvant contenir des chaines de charactères et étant du bon format
+    tableaux[nom_tableau]=np.empty((lignes,colonnes),dtype=object)
+    
+    
+    return nom_tableau
+def importer_donnees_man(nom_tableau):
+    #On devrait ajouter un truc qui vérifie si <<nom_tableau>> existe dans <<tableaux>>
+    colonnes=tableaux[nom_tableau].shape[1]
+    lignes=tableaux[nom_tableau].shape[0]
     print("\nVous devez donner un nom à chaqu'une des",colonnes,"colonnes\n")
     for n in range(colonnes):
-        tableau[0,n]=question("Le nom de la colonne "+str(n)+"\n: ",type(''))
+        tableaux[nom_tableau][0,n]=question("Le nom de la colonne "+str(n)+"\n: ",type(''))
     
     #Entrees des données dans le tableau
     for l in range(1,lignes):
         for c in range(colonnes):
-            tableau[l,c]=question("Entrez la valeur "+str(l)+" de la variable "+tableau[0,c]+": ",type(''))
-
-    #ecriture des données dans le fichiers
-    np.savetxt(nom_fichier,tableau,fmt="%s",delimiter=',')           #ecrit le tableau en chaines de charactères dans un fichier 
+            tableaux[nom_tableau][l,c]=question("Entrez la valeur "+str(l)+" de la colonne "+tableaux[nom_tableau][0,c]+": ",type(''))
     
-    print ("Votre est enregistre sous le nom <<" + nom_fichier + ">>  dans le même répertoir qu'où le code se situe")
+    return nom_tableau
+    
+    
+def exporter_tableau(nom_tableau):
+    #On devrait ajouter d'autres type d'exportation
+    #ecriture des données dans le fichiers
+    np.savetxt(nom_tableau,tableaux[nom_tableau],fmt="%s",delimiter=',')           #ecrit le tableau en chaines de charactères dans un fichier 
+    
+    print ("Votre est enregistre sous le nom <<" + nom_tableau + ">>  dans le même répertoir qu'où le code se situe")
+    return nom_tableau
+    
 
+def ecriture ():
+    exporter_tableau(importer_donnees_man(creer_tableau()))
 
     
 
@@ -163,5 +181,6 @@ def main():
         pass
         #e.args              # arguments stored in .args
     main()
+tableaux = {}
 if __name__ == '__main__':
   main()   
