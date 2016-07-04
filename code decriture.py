@@ -67,13 +67,15 @@ def afficher_variables():
     for cle in tableaux.keys():
         print(cle)
 
-def supprimer_variable():
+def supprimer_variable(*lvar):
     """Permet de supprimer un tableaux de la mémoire dans le projet courant"""
-    var=question("quelle variable voulez-vous supprimer? ",type(''))
-    if var in tableaux:
-        del tableaux[var]
-    else:
-        print('Variable inexistante')
+    if lvar== ():
+        lvar=question("quelle variable voulez-vous supprimer? ",type('')).split()
+    for var in lvar:
+        if var in tableaux:
+            del tableaux[var]
+        else:
+            print('Variable«',var,'»inexistante')
 def creer_tableau():
     """Cette fonction ajoute un tableau au dictionnaire tableaux."""
     
@@ -192,13 +194,16 @@ def main():
         'SUP_VAR':supprimer_variable
         }
     commande= input("Que voulez-vous faire (E: Ecrire un fichier, L: Lire un fichier, G: tracer de graphique, A: aide, Q: arret du programme): ")
+    com_arg=commande.split()
     try:
-        menu[commande.upper()]()        #Ceci cherche dans le dictionnaire une fonction répertorier sous le nom de commande et essai de l'exécuter
+        menu[com_arg[0].upper()](*com_arg[1:len(com_arg)])        #Ceci cherche dans le dictionnaire une fonction répertorier sous le nom de commande et essai de l'exécuter
     except KeyError:
         print("Vous n'avez pas entré une option valide.")
     except Exception as e:
         pass
         #e.args              # arguments stored in .args
+    except TypeError as e:
+        print("Vous avez donnez la mauvaise quantité d'argument à la fonction",e)
     main()
 tableaux = {}
 if __name__ == '__main__':
