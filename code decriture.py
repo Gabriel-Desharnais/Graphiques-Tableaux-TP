@@ -15,7 +15,7 @@ from scipy.optimize import curve_fit
 from matplotlib import pyplot as plt
 import sys
 import unicodedata
-VERSION="0.0.0.0.0.0.2"
+VERSION="0.0.0.0.0.0.3"
 def question(question_a_afficher,type_de_donnees,compteur=2,limites=-1,default=''):
     """Cette fonction permet d'éffectuer une requête d'entrée à l'instar de <<input>>
     sauf qu'elle retourne la réponse dans le type demandé en argument. Elle permet
@@ -62,6 +62,16 @@ def question(question_a_afficher,type_de_donnees,compteur=2,limites=-1,default='
             #Ici un jour on devrait ajouter de quoi qui permet d'envoyer la valeur par défaut au lieu de juste annuler
             raise Exception("Annulation du procéssus (nombre limites de tentatives atteinte)")
 
+def afficher_variables():
+    for cle in tableaux.keys():
+        print(cle)
+
+def supprimer_variable():
+    var=question("quelle variable voulez-vous supprimer? ",type(''))
+    if var in tableaux:
+        del tableaux[var]
+    else:
+        print('Variable inexistante')
 def creer_tableau():
     """Cette fonction ajoute un tableau au dictionnaire tableaux."""
     
@@ -79,6 +89,7 @@ def creer_tableau():
     return nom_tableau
 def importer_donnees_man(nom_tableau):
     #On devrait ajouter un truc qui vérifie si <<nom_tableau>> existe dans <<tableaux>>
+    #if nom_tableau in tableaux:
     colonnes=tableaux[nom_tableau].shape[1]
     lignes=tableaux[nom_tableau].shape[0]
     print("\nVous devez donner un nom à chaqu'une des",colonnes,"colonnes\n")
@@ -94,6 +105,8 @@ def importer_donnees_man(nom_tableau):
     
     
 def exporter_tableau(nom_tableau):
+    #On devrait ajouter un truc qui vérifie si <<nom_tableau>> existe dans <<tableaux>>
+    #if nom_tableau in tableaux:
     #On devrait ajouter d'autres type d'exportation
     #ecriture des données dans le fichiers
     np.savetxt(nom_tableau,tableaux[nom_tableau],fmt="%s",delimiter=',')           #ecrit le tableau en chaines de charactères dans un fichier 
@@ -170,7 +183,9 @@ def main():
         'L':lecture,
         'G':graphique,
         'A':aide,
-        'Q':quiter
+        'Q':quiter,
+        'AFF_VARS':afficher_variables,
+        'SUP_VAR':supprimer_variable
         }
     commande= input("Que voulez-vous faire (E: Ecrire un fichier, L: Lire un fichier, G: tracer de graphique, A: aide, Q: arret du programme): ")
     try:
