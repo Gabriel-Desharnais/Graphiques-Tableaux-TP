@@ -63,10 +63,12 @@ def question(question_a_afficher,type_de_donnees,compteur=2,limites=-1,default='
             raise Exception("Annulation du procéssus (nombre limites de tentatives atteinte)")
 
 def afficher_variables():
+    """Permet d'afficher toutes les tableaux en mémoire dans le projet courant"""
     for cle in tableaux.keys():
         print(cle)
 
 def supprimer_variable():
+    """Permet de supprimer un tableaux de la mémoire dans le projet courant"""
     var=question("quelle variable voulez-vous supprimer? ",type(''))
     if var in tableaux:
         del tableaux[var]
@@ -170,7 +172,9 @@ def aide():
     print("La version du logiciel: ",VERSION,"\n")
     print("Ce programme permet à l'utilisateur d'importer les données de différentes manières et d'en faire des tableaux ou des graphiques \n")
     print("afin de créer un tableau et de l'exporter, choisisez l'option 'E' dans le menu principal. Il vous faudra ensuite entrez les données manuellement")
-    print("Pour Importer vos données depuis un fichier: choisisez l'option 'L' dans le menu principal")        
+    print("Pour Importer vos données depuis un fichier: choisisez l'option 'L' dans le menu principal")
+    print("Pour afficher tous les tableaux en mémoire dans le projet courant <<AFF_VARS>>")
+    print("Pour supprimer un tableau de la mémoire dans le projet courant <<SUP_VAR>>")
     
 def quiter():
     exit()
