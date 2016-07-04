@@ -71,11 +71,15 @@ def supprimer_variable(*lvar):
     """Permet de supprimer un tableaux de la mémoire dans le projet courant"""
     if lvar== ():
         lvar=question("quelle variable voulez-vous supprimer? ",type('')).split()
-    for var in lvar:
-        if var in tableaux:
-            del tableaux[var]
-        else:
-            print('Variable«',var,'»inexistante')
+    if lvar[0]=='ALL':
+        global tableaux
+        tableaux={}
+    else:
+        for var in lvar:
+            if var in tableaux:
+                del tableaux[var]
+            else:
+                print('Variable«',var,'»inexistante')
 def creer_tableau():
     """Cette fonction ajoute un tableau au dictionnaire tableaux."""
     
