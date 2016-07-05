@@ -80,15 +80,23 @@ def supprimer_variable(*lvar):
                 del tableaux[var]
             else:
                 print('Variable«',var,'»inexistante')
-def creer_tableau():
+
+def creer_tableau(*arg):
     """Cette fonction ajoute un tableau au dictionnaire tableaux."""
     
     #Le nom donnée par l'utilisateur servira à nommée le tableau à l'interne
-    nom_tableau = question("Entrer le nom que vous desirez donner au tableau : ",type(''))
-    
-    #L'utilisateur doit spécifié le nombre de colonnes et de lignes que doit contenir le tableau (plus tard ça vaudrait la peine de rendre ça facultatif)
-    colonnes = question("Entrer le nombre de colonnes du tableau : ",type(0))
-    lignes = question("Entrer le nombre de lignes du tableau (La ligne titre ne compte pas) :",type(0))+1
+    if len(arg)>2:
+        nom_tableau = arg[0]
+        lignes = int(arg[1])+1
+        colonnes = int(arg[2])
+    else:
+        if len(arg)>0:
+            nom_tableau = arg[0]
+        else:
+            nom_tableau = question("Entrer le nom que vous desirez donner au tableau : ",type(''))
+        #L'utilisateur doit spécifié le nombre de colonnes et de lignes que doit contenir le tableau (plus tard ça vaudrait la peine de rendre ça facultatif)
+        colonnes = question("Entrer le nombre de colonnes du tableau : ",type(0))
+        lignes = question("Entrer le nombre de lignes du tableau (La ligne titre ne compte pas) :",type(0))+1
     
     #Création d'un tableau numpy pouvant contenir des chaines de charactères et étant du bon format
     tableaux[nom_tableau]=np.empty((lignes,colonnes),dtype=object)
@@ -181,6 +189,9 @@ def aide():
     print("Pour Importer vos données depuis un fichier: choisisez l'option 'L' dans le menu principal")
     print("Pour afficher tous les tableaux en mémoire dans le projet courant <<AFF_VARS>>")
     print("Pour supprimer un tableau de la mémoire dans le projet courant <<SUP_VAR>>")
+    print("Pour créer un tableau «NOUV_TAB»")
+    print("Pour transcrire toutes vos donnée manuellement vers un tableau «REMP_TAB»")
+    print("Pour exporter un tableau vers un fichier «EXP_TAB»")
     
 def quiter():
     exit()
@@ -195,7 +206,10 @@ def main():
         'A':aide,
         'Q':quiter,
         'AFF_VARS':afficher_variables,
-        'SUP_VAR':supprimer_variable
+        'SUP_VAR':supprimer_variable,
+        'NOUV_TAB':creer_tableau,
+        'REMP_TAB':importer_donnees_man,
+        'EXP_TAB':exporter_tableau
         }
     commande= input("Que voulez-vous faire (E: Ecrire un fichier, L: Lire un fichier, G: tracer de graphique, A: aide, Q: arret du programme): ")
     com_arg=commande.split()
