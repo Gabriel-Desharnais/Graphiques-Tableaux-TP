@@ -120,19 +120,23 @@ def importer_donnees_man(nom_tableau):
     
     return nom_tableau
     
-def exporter_tableau(nom_tableau):
-    #On devrait ajouter un truc qui vérifie si <<nom_tableau>> existe dans <<tableaux>>
-    if nom_tableau in tableaux:
+def exporter_tableau(*arg):
+    if len(arg)<1:
+        print("Erreur. Veuillez fournir les arguments demmandés. Utillisez la fonction «AIDE» pour plus d'information" )
+        return "_Erreur"
+    if len(arg)<2:
+        arg+=(arg[0],)
+    if arg[0] in tableaux:
         #ecriture des données dans le fichiers
-        np.savetxt(nom_tableau,tableaux[nom_tableau],fmt="%s",delimiter=',')           #ecrit le tableau en chaines de charactères dans un fichier 
-        print ("Votre est enregistre sous le nom <<" + nom_tableau + ">>  dans le même répertoir qu'où le code se situe")
+        np.savetxt(arg[1],tableaux[arg[0]],fmt="%s",delimiter=',')           #ecrit le tableau en chaines de charactères dans un fichier 
+        print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
         #On devrait ajouter d'autres type d'exportation
     else:
-        print(nom_tableau,"n'existe pas. Impossible de l'exporter")
+        print(arg[0],"n'existe pas. Impossible de l'exporter")
     
     
     
-    return nom_tableau
+    return arg[0]
 
 def ecriture ():
     exporter_tableau(importer_donnees_man(creer_tableau()))
