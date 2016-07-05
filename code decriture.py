@@ -103,6 +103,7 @@ def creer_tableau(*arg):
     
     
     return nom_tableau
+
 def importer_donnees_man(nom_tableau):
     #On devrait ajouter un truc qui vérifie si <<nom_tableau>> existe dans <<tableaux>>
     #if nom_tableau in tableaux:
@@ -119,22 +120,22 @@ def importer_donnees_man(nom_tableau):
     
     return nom_tableau
     
-    
 def exporter_tableau(nom_tableau):
     #On devrait ajouter un truc qui vérifie si <<nom_tableau>> existe dans <<tableaux>>
-    #if nom_tableau in tableaux:
-    #On devrait ajouter d'autres type d'exportation
-    #ecriture des données dans le fichiers
-    np.savetxt(nom_tableau,tableaux[nom_tableau],fmt="%s",delimiter=',')           #ecrit le tableau en chaines de charactères dans un fichier 
+    if nom_tableau in tableaux:
+        #ecriture des données dans le fichiers
+        np.savetxt(nom_tableau,tableaux[nom_tableau],fmt="%s",delimiter=',')           #ecrit le tableau en chaines de charactères dans un fichier 
+        print ("Votre est enregistre sous le nom <<" + nom_tableau + ">>  dans le même répertoir qu'où le code se situe")
+        #On devrait ajouter d'autres type d'exportation
+    else:
+        print(nom_tableau,"n'existe pas. Impossible de l'exporter")
     
-    print ("Votre est enregistre sous le nom <<" + nom_tableau + ">>  dans le même répertoir qu'où le code se situe")
+    
+    
     return nom_tableau
-    
 
 def ecriture ():
     exporter_tableau(importer_donnees_man(creer_tableau()))
-
-    
 
 #Lecture d'une fichier
 def lecture():
