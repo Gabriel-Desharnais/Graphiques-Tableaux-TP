@@ -15,7 +15,7 @@ from scipy.optimize import curve_fit
 from matplotlib import pyplot as plt
 import sys
 import unicodedata
-VERSION="0.0.0.0.0.0.2"
+VERSION="0.0.0.0.0.0.3"
 def question(question_a_afficher,type_de_donnees,compteur=2,limites=-1,default=''):
     """Cette fonction permet d'éffectuer une requête d'entrée à l'instar de <<input>>
     sauf qu'elle retourne la réponse dans le type demandé en argument. Elle permet
@@ -26,6 +26,7 @@ def question(question_a_afficher,type_de_donnees,compteur=2,limites=-1,default='
     désactiver cette fonction). Elle permet aussi d'ajouter une valeur par défault si
     l'utilisateur entre une valeur vide<<''>>, alors c'est cette valeur qui sera considéré
     comme entrée."""
+    #On devrait ajouter un truc qui permet de choisir comme type par défault string
     while True:
         compteur-=1
         limites-=1
@@ -60,32 +61,78 @@ def question(question_a_afficher,type_de_donnees,compteur=2,limites=-1,default='
         if limites == 0:
             #Ici un jour on devrait ajouter de quoi qui permet d'envoyer la valeur par défaut au lieu de juste annuler
             raise Exception("Annulation du procéssus (nombre limites de tentatives atteinte)")
-def ecriture ():
-    nom_fichier = question("Entrer le nom que vous desirez donner au fichier : ",type('')) #nom attribué au fichier qui sera écrit
+
+def afficher_variables():
+    """Permet d'afficher toutes les tableaux en mémoire dans le projet courant"""
+    for cle in tableaux.keys():
+        print(cle)
+
+def supprimer_variable(*lvar):
+    """Permet de supprimer un tableaux de la mémoire dans le projet courant"""
+    if lvar== ():
+        lvar=question("quelle variable voulez-vous supprimer? ",type('')).split()
+    if lvar[0]=='ALL':
+        global tableaux
+        tableaux={}
+    else:
+        for var in lvar:
+            if var in tableaux:
+                del tableaux[var]
+            else:
+                print('Variable«',var,'»inexistante')
+
+def creer_tableau(*arg):
+    """Cette fonction ajoute un tableau au dictionnaire tableaux."""
     
-    nb_liste = question("Entrer le nombre de variable à entrer dans le fichier : ",type(0)) #nombre de variable qui vont être ecrite
-    colonnes=nb_liste+1
+    #Le nom donnée par l'utilisateur servira à nommée le tableau à l'interne
+    if len(arg)>2:
+        nom_tableau = arg[0]
+        lignes = int(arg[1])+1
+        colonnes = int(arg[2])
+    else:
+        if len(arg)>0:
+            nom_tableau = arg[0]
+        else:
+            nom_tableau = question("Entrer le nom que vous desirez donner au tableau : ",type(''))
+        #L'utilisateur doit spécifié le nombre de colonnes et de lignes que doit contenir le tableau (plus tard ça vaudrait la peine de rendre ça facultatif)
+        colonnes = question("Entrer le nombre de colonnes du tableau : ",type(0))
+        lignes = question("Entrer le nombre de lignes du tableau (La ligne titre ne compte pas) :",type(0))+1
     
-    nb_donnee = question("Entrer le nombre de donnees à entrer :",type(0))
-        
-    lignes=nb_donnee+1                                              #+1 pour la ligne de titre
-    tableau=np.empty((lignes,colonnes),dtype=object)                #Création d'un tableau numpy pouvant contenir des chaines de charactères et étant du bon format
-        
-    #donner un nom pour chaque colonne du tableau
+    #Création d'un tableau numpy pouvant contenir des chaines de charactères et étant du bon format
+    tableaux[nom_tableau]=np.empty((lignes,colonnes),dtype=object)
+    
+    
+    return nom_tableau
+def importer_donnees_man(nom_tableau):
+    #On devrait ajouter un truc qui vérifie si <<nom_tableau>> existe dans <<tableaux>>
+    #if nom_tableau in tableaux:
+    colonnes=tableaux[nom_tableau].shape[1]
+    lignes=tableaux[nom_tableau].shape[0]
     print("\nVous devez donner un nom à chaqu'une des",colonnes,"colonnes\n")
     for n in range(colonnes):
-        tableau[0,n]=question("Le nom de la colonne "+str(n)+"\n: ",type(''))
+        tableaux[nom_tableau][0,n]=question("Le nom de la colonne "+str(n)+"\n: ",type(''))
     
     #Entrees des données dans le tableau
     for l in range(1,lignes):
         for c in range(colonnes):
-            tableau[l,c]=question("Entrez la valeur "+str(l)+" de la variable "+tableau[0,c]+": ",type(''))
-
-    #ecriture des données dans le fichiers
-    np.savetxt(nom_fichier,tableau,fmt="%s",delimiter=',')           #ecrit le tableau en chaines de charactères dans un fichier 
+            tableaux[nom_tableau][l,c]=question("Entrez la valeur "+str(l)+" de la colonne "+tableaux[nom_tableau][0,c]+": ",type(''))
     
-    print ("Votre est enregistre sous le nom <<" + nom_fichier + ">>  dans le même répertoir qu'où le code se situe")
+    return nom_tableau
+    
+    
+def exporter_tableau(nom_tableau):
+    #On devrait ajouter un truc qui vérifie si <<nom_tableau>> existe dans <<tableaux>>
+    #if nom_tableau in tableaux:
+    #On devrait ajouter d'autres type d'exportation
+    #ecriture des données dans le fichiers
+    np.savetxt(nom_tableau,tableaux[nom_tableau],fmt="%s",delimiter=',')           #ecrit le tableau en chaines de charactères dans un fichier 
+    
+    print ("Votre est enregistre sous le nom <<" + nom_tableau + ">>  dans le même répertoir qu'où le code se situe")
+    return nom_tableau
+    
 
+def ecriture ():
+    exporter_tableau(importer_donnees_man(creer_tableau()))
 
     
 
@@ -139,7 +186,12 @@ def aide():
     print("La version du logiciel: ",VERSION,"\n")
     print("Ce programme permet à l'utilisateur d'importer les données de différentes manières et d'en faire des tableaux ou des graphiques \n")
     print("afin de créer un tableau et de l'exporter, choisisez l'option 'E' dans le menu principal. Il vous faudra ensuite entrez les données manuellement")
-    print("Pour Importer vos données depuis un fichier: choisisez l'option 'L' dans le menu principal")        
+    print("Pour Importer vos données depuis un fichier: choisisez l'option 'L' dans le menu principal")
+    print("Pour afficher tous les tableaux en mémoire dans le projet courant <<AFF_VARS>>")
+    print("Pour supprimer un tableau de la mémoire dans le projet courant <<SUP_VAR>>")
+    print("Pour créer un tableau «NOUV_TAB»")
+    print("Pour transcrire toutes vos donnée manuellement vers un tableau «REMP_TAB»")
+    print("Pour exporter un tableau vers un fichier «EXP_TAB»")
     
 def quiter():
     exit()
@@ -152,16 +204,25 @@ def main():
         'L':lecture,
         'G':graphique,
         'A':aide,
-        'Q':quiter
+        'Q':quiter,
+        'AFF_VARS':afficher_variables,
+        'SUP_VAR':supprimer_variable,
+        'NOUV_TAB':creer_tableau,
+        'REMP_TAB':importer_donnees_man,
+        'EXP_TAB':exporter_tableau
         }
     commande= input("Que voulez-vous faire (E: Ecrire un fichier, L: Lire un fichier, G: tracer de graphique, A: aide, Q: arret du programme): ")
+    com_arg=commande.split()
     try:
-        menu[commande.upper()]()        #Ceci cherche dans le dictionnaire une fonction répertorier sous le nom de commande et essai de l'exécuter
+        menu[com_arg[0].upper()](*com_arg[1:len(com_arg)])        #Ceci cherche dans le dictionnaire une fonction répertorier sous le nom de commande et essai de l'exécuter
     except KeyError:
         print("Vous n'avez pas entré une option valide.")
     except Exception as e:
         pass
         #e.args              # arguments stored in .args
+    except TypeError as e:
+        print("Vous avez donnez la mauvaise quantité d'argument à la fonction",e)
     main()
+tableaux = {}
 if __name__ == '__main__':
   main()   
