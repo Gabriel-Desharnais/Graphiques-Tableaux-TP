@@ -218,6 +218,9 @@ def main():
         }
     commande= input("Que voulez-vous faire (E: Ecrire un fichier, L: Lire un fichier, G: tracer de graphique, A: aide, Q: arret du programme): ")
     com_arg=commande.split()
+    for x in range(1,len(com_arg)):
+        if com_arg[x].upper().startswith("_ASK"):
+            com_arg[x]=question(com_arg[x]+":",type(''))
     try:
         menu[com_arg[0].upper()](*com_arg[1:len(com_arg)])        #Ceci cherche dans le dictionnaire une fonction répertorier sous le nom de commande et essai de l'exécuter
     except KeyError:
