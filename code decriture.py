@@ -126,10 +126,20 @@ def exporter_tableau(*arg):
         return "_Erreur"
     if len(arg)<2:
         arg+=(arg[0],)
-    if arg[0] in tableaux:
-        #ecriture des données dans le fichiers
-        np.savetxt(arg[1],tableaux[arg[0]],fmt="%s",delimiter=',')           #ecrit le tableau en chaines de charactères dans un fichier 
-        print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
+    if len(arg)<3:
+        arg+=("txt",)
+    if arg[0] in tableaux:                                                      #Vérifie si le tableau existe
+        #écriture des données dans le fichiers
+        #écriture des données sous format texte
+        if arg[2]=="txt":
+            np.savetxt(arg[1],tableaux[arg[0]],fmt="%s",delimiter=',')              #ecrit le tableau en chaines de charactères dans un fichier 
+            print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
+        #écriture des données sous format binaire
+        elif arg[2]=="bin":
+            np.save(arg[1],tableaux[arg[0]])              #ecrit le tableau en chaines de charactères dans un fichier 
+            print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
+        else:
+            print("Format d'exportation non supporté.")
         #On devrait ajouter d'autres type d'exportation
     else:
         print(arg[0],"n'existe pas. Impossible de l'exporter")
