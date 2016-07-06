@@ -131,11 +131,11 @@ def exporter_tableau(*arg):
     if arg[0] in tableaux:                                                      #Vérifie si le tableau existe
         #écriture des données dans le fichiers
         #écriture des données sous format texte
-        if arg[2]=="txt":
+        if arg[2].upper() in ("TXT","CSV"):
             np.savetxt(arg[1],tableaux[arg[0]],fmt="%s",delimiter=',')              #ecrit le tableau en chaines de charactères dans un fichier 
             print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
         #écriture des données sous format binaire
-        elif arg[2]=="bin":
+        elif arg[2].upper() in ("BIN",):
             np.save(arg[1],tableaux[arg[0]])              #ecrit le tableau en chaines de charactères dans un fichier 
             print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
         else:
