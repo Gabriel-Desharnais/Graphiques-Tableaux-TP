@@ -152,6 +152,34 @@ def exporter_tableau(*arg):
     
     return arg[0]
 
+def entete(lignes,colonnes):
+    print("Bienvenue dans l'assitant de création d'entête.")
+    print("Votre tableau à",lignes,"lignes et",colonnes,"colones (Incluant la ligne de nom des colonnes)")
+    ligne=[]
+    while True:
+        com=question(": ",type('')).split()
+        if "FIN" ==com[0].upper():
+            break
+        elif "AJO_LIGNE"==com[0].upper():
+            ligne.append((list(range(int(colonnes))),{},))
+        elif "AFF"==com[0].upper():
+            for lin in ligne:
+                lig=''
+                for c in set(lin[0]):
+                    lig+='|'
+                    lig+=' '*(lin[0].count(c)*3-2)
+                    lig+='|'
+                print(lig)
+            print('| |'*int(colonnes))
+        elif "FUS" ==com[0].upper():
+            a=range(int(com[2]),int(com[3])+1)
+            for f in a:
+                ligne[int(com[1])][0][f]=int(com[2])
+            ligne[int(com[1])][1][int(com[2])]=com[4]
+        elif "NOM" ==com[0].upper():
+            ligne[int(com[1])][1][ligne[int(com[1])][0][int(com[2])]]=com[3]
+        else:
+            print("commande inconnu")
 def ecriture ():
     exporter_tableau(importer_donnees_man(creer_tableau()))
 
@@ -228,7 +256,8 @@ def main():
         'SUP_VAR':supprimer_variable,
         'NOUV_TAB':creer_tableau,
         'REMP_TAB':importer_donnees_man,
-        'EXP_TAB':exporter_tableau
+        'EXP_TAB':exporter_tableau,
+        'EE':entete
         }
     commande= input("Que voulez-vous faire (E: Ecrire un fichier, L: Lire un fichier, G: tracer de graphique, A: aide, Q: arret du programme): ")
     com_arg=commande.split()
