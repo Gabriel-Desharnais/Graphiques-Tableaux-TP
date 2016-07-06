@@ -7,6 +7,9 @@ Ce programme écrit en **Python 3** permet d'automatiser certaines tâches relat
   - feuille de calcul **Excel** (à venir)
   - tableau **Numpy**
   - document texte
+  - document **CSV**
+  - document **html** (à venir)
+  - document **MarkDown**
 - De créer un formatage pour les données des tableaux:
   - Ajuster le nombre de chiffres significatifs à partir de l'erreur sur une données (à venir)
   - Afficher les résultats sous notation scientifique (à venir)
