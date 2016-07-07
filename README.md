@@ -3,7 +3,7 @@
 Ce programme écrit en **Python 3** permet d'automatiser certaines tâches relatives à la rédaction de rapport de laboratoire. Il permet en outre de:
 
 - De créer des tableaux et de les exporter dans différent format:
-  - **LaTeX** (à venir)
+  - **LaTeX**
   - feuille de calcul **Excel** (à venir)
   - tableau **Numpy**
   - document texte
