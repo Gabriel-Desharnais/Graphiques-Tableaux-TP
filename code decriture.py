@@ -142,6 +142,12 @@ def exporter_tableau(*arg):
         elif arg[2].upper() in ("BIN",):
             np.save(arg[1],tableaux[arg[0]])              #ecrit le tableau en chaines de charactères dans un fichier 
             print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
+        elif arg[2].upper() in ("LATEX","TEX"):
+            a=export_tex(tableaux[arg[0]])
+            b=open(arg[1],'w')
+            b.write(a)
+            b.close()
+            print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
         else:
             print("Format d'exportation non supporté.")
         #On devrait ajouter d'autres type d'exportation
@@ -180,6 +186,24 @@ def entete(lignes,colonnes):
             ligne[int(com[1])][1][ligne[int(com[1])][0][int(com[2])]]=com[3]
         else:
             print("commande inconnu")
+    return ligne
+
+def export_tex(tab):
+    fichier="\\begin{tabular}{|"
+    b=tab.shape[1] #Nombre de colonnes
+    #Terminer l'entête
+    for r in range(b):
+        fichier+="c|"
+    fichier+="}\n\\hline\n"
+    #ajouter toutes les lignes
+    for l in tab:
+        #faire toutes les colonnes sauf la dernière
+        for r in range(b-1):
+            fichier+=str(l[r])+'&'
+        fichier+=str(l[b-1])+"\\\\\n"
+    fichier+="\\hline\n\\end{tabular}"
+    #entete(lignes,colonnes)
+    return fichier
 def ecriture ():
     exporter_tableau(importer_donnees_man(creer_tableau()))
 
