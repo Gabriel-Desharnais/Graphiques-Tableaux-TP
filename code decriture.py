@@ -148,6 +148,12 @@ def exporter_tableau(*arg):
             b.write(a)
             b.close()
             print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
+        elif arg[2].upper() in ("MD",):
+            a=export_md(tableaux[arg[0]])
+            b=open(arg[1],'w')
+            b.write(a)
+            b.close()
+            print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
         else:
             print("Format d'exportation non supporté.")
         #On devrait ajouter d'autres type d'exportation
@@ -187,7 +193,19 @@ def entete(lignes,colonnes):
         else:
             print("commande inconnu")
     return ligne
-
+def export_md(tab):
+    fichier="|"
+    c=len(tab[0,:])
+    for r in tab[0,:]:
+        fichier+=r+"|"
+    fichier+="\n|"
+    for r in range(c):
+        fichier+="---|"
+    for l in tab[1:,:]:
+        fichier+="\n|"
+        for r in l:
+            fichier+=r+"|"
+    return fichier
 def export_tex(tab):
     fichier="\\begin{tabular}{|"
     b=tab.shape[1] #Nombre de colonnes
