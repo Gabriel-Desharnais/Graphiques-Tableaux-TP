@@ -8,7 +8,7 @@ Ce programme écrit en **Python 3** permet d'automatiser certaines tâches relat
   - tableau **Numpy**
   - document texte
   - document **CSV**
-  - document **html** (à venir)
+  - document **html**
   - document **MarkDown**
 - De créer un formatage pour les données des tableaux:
   - Ajuster le nombre de chiffres significatifs à partir de l'erreur sur une données (à venir)
