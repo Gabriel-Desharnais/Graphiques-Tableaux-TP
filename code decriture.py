@@ -103,6 +103,7 @@ def creer_tableau(*arg):
     
     
     return nom_tableau
+
 def importer_donnees_man(nom_tableau):
     #On devrait ajouter un truc qui vérifie si <<nom_tableau>> existe dans <<tableaux>>
     #if nom_tableau in tableaux:
@@ -119,22 +120,125 @@ def importer_donnees_man(nom_tableau):
     
     return nom_tableau
     
+def exporter_tableau(*arg):
+    if len(arg)<1:
+        print("Erreur. Veuillez fournir les arguments demmandés. Utillisez la fonction «AIDE» pour plus d'information" )
+        return "_Erreur"
+    if len(arg)<2:
+        arg+=(arg[0],)
+    if len(arg)<3:
+        arg+=("txt",)
+    if arg[0] in tableaux:                                                      #Vérifie si le tableau existe
+        #écriture des données dans le fichiers
+        #écriture des données sous format texte
+        if arg[2].upper() in ("TXT","CSV"):
+            if len(arg)>3:
+                deli=arg[3]
+            else:
+                deli=','
+            np.savetxt(arg[1],tableaux[arg[0]],fmt="%s",delimiter=deli)              #ecrit le tableau en chaines de charactères dans un fichier 
+            print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
+        #écriture des données sous format binaire
+        elif arg[2].upper() in ("BIN",):
+            np.save(arg[1],tableaux[arg[0]])              #ecrit le tableau en chaines de charactères dans un fichier 
+            print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
+        elif arg[2].upper() in ("LATEX","TEX"):
+            a=export_tex(tableaux[arg[0]])
+            b=open(arg[1],'w')
+            b.write(a)
+            b.close()
+            print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
+        elif arg[2].upper() in ("MD",):
+            a=export_md(tableaux[arg[0]])
+            b=open(arg[1],'w')
+            b.write(a)
+            b.close()
+            print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
+        elif arg[2].upper() in ("HTML","HTM"):
+            a=export_html(tableaux[arg[0]])
+            b=open(arg[1],'w')
+            b.write(a)
+            b.close()
+            print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
+        else:
+            print("Format d'exportation non supporté.")
+        #On devrait ajouter d'autres type d'exportation
+    else:
+        print(arg[0],"n'existe pas. Impossible de l'exporter")
     
-def exporter_tableau(nom_tableau):
-    #On devrait ajouter un truc qui vérifie si <<nom_tableau>> existe dans <<tableaux>>
-    #if nom_tableau in tableaux:
-    #On devrait ajouter d'autres type d'exportation
-    #ecriture des données dans le fichiers
-    np.savetxt(nom_tableau,tableaux[nom_tableau],fmt="%s",delimiter=',')           #ecrit le tableau en chaines de charactères dans un fichier 
     
-    print ("Votre est enregistre sous le nom <<" + nom_tableau + ">>  dans le même répertoir qu'où le code se situe")
-    return nom_tableau
     
+    return arg[0]
 
+def entete(lignes,colonnes):
+    print("Bienvenue dans l'assitant de création d'entête.")
+    print("Votre tableau à",lignes,"lignes et",colonnes,"colones (Incluant la ligne de nom des colonnes)")
+    ligne=[]
+    while True:
+        com=question(": ",type('')).split()
+        if "FIN" ==com[0].upper():
+            break
+        elif "AJO_LIGNE"==com[0].upper():
+            ligne.append((list(range(int(colonnes))),{},))
+        elif "AFF"==com[0].upper():
+            for lin in ligne:
+                lig=''
+                for c in set(lin[0]):
+                    lig+='|'
+                    lig+=' '*(lin[0].count(c)*3-2)
+                    lig+='|'
+                print(lig)
+            print('| |'*int(colonnes))
+        elif "FUS" ==com[0].upper():
+            a=range(int(com[2]),int(com[3])+1)
+            for f in a:
+                ligne[int(com[1])][0][f]=int(com[2])
+            ligne[int(com[1])][1][int(com[2])]=com[4]
+        elif "NOM" ==com[0].upper():
+            ligne[int(com[1])][1][ligne[int(com[1])][0][int(com[2])]]=com[3]
+        else:
+            print("commande inconnu")
+    return ligne
+def export_html(tab):
+    fichier="<table>\n"
+    for r in tab:
+        fichier+="\t<tr>\n"
+        for e in r:
+            fichier+="\t\t<th>"+e+"</th>\n"
+        fichier+="\t</tr>\n"
+    fichier+="</table>"
+    return fichier
+def export_md(tab):
+    fichier="|"
+    c=len(tab[0,:])
+    for r in tab[0,:]:
+        fichier+=r+"|"
+    fichier+="\n|"
+    for r in range(c):
+        fichier+="---|"
+    for l in tab[1:,:]:
+        fichier+="\n|"
+        for r in l:
+            fichier+=r+"|"
+    return fichier
+def export_tex(tab):
+    fichier="\\begin{tabular}{|"
+    b=tab.shape[1] #Nombre de colonnes
+    #Terminer l'entête
+    for r in range(b):
+        fichier+="c|"
+    fichier+="}\n\\hline\n"
+    #ajouter toutes les lignes
+    for l in tab:
+        #faire toutes les colonnes sauf la dernière
+        for r in range(b-1):
+            fichier+=str(l[r])+'&'
+        fichier+=str(l[b-1])+"\\\\\n"
+    fichier+="\\hline\n\\end{tabular}"
+    #entete(lignes,colonnes)
+    return fichier
 def ecriture ():
     exporter_tableau(importer_donnees_man(creer_tableau()))
-
-    
 
 #Lecture d'une fichier
 def lecture():
@@ -209,10 +313,14 @@ def main():
         'SUP_VAR':supprimer_variable,
         'NOUV_TAB':creer_tableau,
         'REMP_TAB':importer_donnees_man,
-        'EXP_TAB':exporter_tableau
+        'EXP_TAB':exporter_tableau,
+        'EE':entete
         }
     commande= input("Que voulez-vous faire (E: Ecrire un fichier, L: Lire un fichier, G: tracer de graphique, A: aide, Q: arret du programme): ")
     com_arg=commande.split()
+    for x in range(1,len(com_arg)):
+        if com_arg[x].upper().startswith("_ASK"):
+            com_arg[x]=question(com_arg[x]+":",type(''))
     try:
         menu[com_arg[0].upper()](*com_arg[1:len(com_arg)])        #Ceci cherche dans le dictionnaire une fonction répertorier sous le nom de commande et essai de l'exécuter
     except KeyError:
