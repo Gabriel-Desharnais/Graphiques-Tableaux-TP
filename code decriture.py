@@ -66,7 +66,23 @@ def afficher_variables():
     """Permet d'afficher toutes les tableaux en mémoire dans le projet courant"""
     for cle in tableaux.keys():
         print(cle)
-
+def afficher_tab(*lvar):
+    if not (lvar == ()):
+        c=[]
+        for l in (tableaux[lvar[0]])[0,:]:
+            c+=[0]
+        for r in tableaux[lvar[0]]:
+            for l in range(len(r)):
+                if len(r[l])>c[l]:
+                    c[l]=len(r[l])
+        for r in tableaux[lvar[0]]:
+            print('-'*(sum(c)+len(c)+1))
+            for l in range(len(r)):
+                print('|',r[l],end='',sep='')
+                a=c[l]-len(r[l])
+                print(' '*a,end='')
+            print('|')
+        print('-'*(sum(c)+len(c)+1))
 def supprimer_variable(*lvar):
     """Permet de supprimer un tableaux de la mémoire dans le projet courant"""
     if lvar== ():
@@ -309,7 +325,8 @@ def main():
         'G':graphique,
         'A':aide,
         'Q':quiter,
-        'AFF_VARS':afficher_variables,
+        'LIST_TABS':afficher_variables,
+        'AFF_TAB':afficher_tab,
         'SUP_VAR':supprimer_variable,
         'NOUV_TAB':creer_tableau,
         'REMP_TAB':importer_donnees_man,
