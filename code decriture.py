@@ -97,6 +97,8 @@ def supprimer_variable(*lvar):
             else:
                 print('Variable«',var,'»inexistante')
 def modifier_tab(*arg):
+    if len(arg)<4:
+        arg=list(arg)+["",]
     if len(arg)>3:
         tableaux[arg[0]][int(arg[1]),int(arg[2])]=arg[3]
 def creer_tableau(*arg):
