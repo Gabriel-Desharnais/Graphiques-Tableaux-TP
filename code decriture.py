@@ -61,6 +61,12 @@ def question(question_a_afficher,type_de_donnees,compteur=2,limites=-1,default='
         if limites == 0:
             #Ici un jour on devrait ajouter de quoi qui permet d'envoyer la valeur par défaut au lieu de juste annuler
             raise Exception("Annulation du procéssus (nombre limites de tentatives atteinte)")
+def importer_tab(*arg):
+    if(len(arg)<3):
+        arg=list(arg)+[",",]
+    tableaux[arg[0]] = np.genfromtxt(arg[1], delimiter=arg[2], dtype=str)
+    print("tableaux",arg[0],"importer")
+
 
 def afficher_variables():
     """Permet d'afficher toutes les tableaux en mémoire dans le projet courant"""
@@ -335,6 +341,7 @@ def main():
         'NOUV_TAB':creer_tableau,
         'REMP_TAB':importer_donnees_man,
         'MOD_TAB':modifier_tab,
+        'IMP_TAB':importer_tab,
         'EXP_TAB':exporter_tableau,
         'EE':entete
         }
