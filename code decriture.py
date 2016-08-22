@@ -66,7 +66,31 @@ def importer_tab(*arg):
         arg=list(arg)+[",",]
     tableaux[arg[0]] = np.genfromtxt(arg[1], delimiter=arg[2], dtype=str)
     print("tableaux",arg[0],"importer")
+def ploter_tableau(*_arg,header=0,x=0,y=1):
+    for _a in _arg:
+        if "=" in _a:
+            exec(_a)
+    
+  
+    #var =np.loadtxt(nom_doc,skiprows= int(saut) ,unpack=True)
+      
+    #x = question("Entrez le numéros de la colonne qui sera la composante X du graphique :",type(0))
 
+    #y =question("Entrez le numéros de la colonne qui sera la composante Y du graphique :",type(0))
+   
+    #varx = var[x-1]
+    #vary = var[y-1]
+    #axe_x =question("Entrer le titre de l'axe des x :",type(''))
+    #axe_y = question("Entrer le titre de l'axe des y :",type(''))
+    
+    
+    plt.plot(tableaux[_arg[0]][int(header)+1:,int(x)].astype(float), tableaux[_arg[0]][int(header)+1:,int(y)].astype(float))
+    plt.xlabel(tableaux[_arg[0]][int(header):,int(x)])
+    plt.ylabel(tableaux[_arg[0]][int(header):,int(y)])
+       
+    #nom_graph = question("Entrer le nom du graphique :",type(''))
+    #plt.savefig(nom_graph+'.png')               #Enregitre une image <<PNG>> du graphique
+    plt.show()                                  #Affiche le graphique
 
 def afficher_variables():
     """Permet d'afficher toutes les tableaux en mémoire dans le projet courant"""
@@ -163,29 +187,29 @@ def exporter_tableau(*arg):
             else:
                 deli=','
             np.savetxt(arg[1],tableaux[arg[0]],fmt="%s",delimiter=deli)              #ecrit le tableau en chaines de charactères dans un fichier 
-            print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
+            print ("Votre tableau est enregistre sous le nom «" + arg[1] + "»  dans le même répertoir qu'où le code se situe")
         #écriture des données sous format binaire
         elif arg[2].upper() in ("BIN",):
             np.save(arg[1],tableaux[arg[0]])              #ecrit le tableau en chaines de charactères dans un fichier 
-            print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
+            print ("Votre tableau est enregistre sous le nom «" + arg[1] + "»  dans le même répertoir qu'où le code se situe")
         elif arg[2].upper() in ("LATEX","TEX"):
             a=export_tex(tableaux[arg[0]])
             b=open(arg[1],'w')
             b.write(a)
             b.close()
-            print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
+            print ("Votre tableau est enregistre sous le nom «" + arg[1] + "»  dans le même répertoir qu'où le code se situe")
         elif arg[2].upper() in ("MD",):
             a=export_md(tableaux[arg[0]])
             b=open(arg[1],'w')
             b.write(a)
             b.close()
-            print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
+            print ("Votre tableau est enregistre sous le nom «" + arg[1] + "»  dans le même répertoir qu'où le code se situe")
         elif arg[2].upper() in ("HTML","HTM"):
             a=export_html(tableaux[arg[0]])
             b=open(arg[1],'w')
             b.write(a)
             b.close()
-            print ("Votre tableau est enregistre sous le nom <<" + arg[1] + ">>  dans le même répertoir qu'où le code se situe")
+            print ("Votre tableau est enregistre sous le nom «" + arg[1] + "»  dans le même répertoir qu'où le code se situe")
         else:
             print("Format d'exportation non supporté.")
         #On devrait ajouter d'autres type d'exportation
@@ -317,8 +341,8 @@ def aide():
     print("Ce programme permet à l'utilisateur d'importer les données de différentes manières et d'en faire des tableaux ou des graphiques \n")
     print("afin de créer un tableau et de l'exporter, choisisez l'option 'E' dans le menu principal. Il vous faudra ensuite entrez les données manuellement")
     print("Pour Importer vos données depuis un fichier: choisisez l'option 'L' dans le menu principal")
-    print("Pour afficher tous les tableaux en mémoire dans le projet courant <<AFF_VARS>>")
-    print("Pour supprimer un tableau de la mémoire dans le projet courant <<SUP_VAR>>")
+    print("Pour afficher tous les tableaux en mémoire dans le projet courant «AFF_VARS»")
+    print("Pour supprimer un tableau de la mémoire dans le projet courant «SUP_VAR»")
     print("Pour créer un tableau «NOUV_TAB»")
     print("Pour transcrire toutes vos donnée manuellement vers un tableau «REMP_TAB»")
     print("Pour exporter un tableau vers un fichier «EXP_TAB»")
@@ -343,6 +367,7 @@ def main():
         'MOD_TAB':modifier_tab,
         'IMP_TAB':importer_tab,
         'EXP_TAB':exporter_tableau,
+        'PLOT_TAB':ploter_tableau,
         'EE':entete
         }
     commande= input("Que voulez-vous faire (E: Ecrire un fichier, L: Lire un fichier, G: tracer de graphique, A: aide, Q: arret du programme): ")
