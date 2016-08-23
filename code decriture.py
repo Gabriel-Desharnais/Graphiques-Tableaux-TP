@@ -346,6 +346,9 @@ def aide():
     print("Pour créer un tableau «NOUV_TAB»")
     print("Pour transcrire toutes vos donnée manuellement vers un tableau «REMP_TAB»")
     print("Pour exporter un tableau vers un fichier «EXP_TAB»")
+    print("Pour importer un tableau depuis un fichier «IMP_TAB»")
+    print("Pour afficher un graphique «PLOT_TAB»")
+    print("Pour affciher un tableau «AFF_TAB»")
     
 def quiter():
     exit()
