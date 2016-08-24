@@ -17,6 +17,7 @@ Ce programme écrit en **Python 3** permet d'automatiser certaines tâches relat
 - Effectuer des régression non linéaire (à venir)
 - Produire des résultat suite à des calculs récursifs (à venir)
 - Effectuer des analyses statistiques
+- Afficher un tableau
 
 ###### Comment s'en servir
 Il faut que les éléments suivants soient installés:
