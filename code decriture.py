@@ -72,17 +72,6 @@ def ploter_tableau(*_arg,header=0,x=0,y=1):
             exec(_a)
     
   
-    #var =np.loadtxt(nom_doc,skiprows= int(saut) ,unpack=True)
-      
-    #x = question("Entrez le numéros de la colonne qui sera la composante X du graphique :",type(0))
-
-    #y =question("Entrez le numéros de la colonne qui sera la composante Y du graphique :",type(0))
-   
-    #varx = var[x-1]
-    #vary = var[y-1]
-    #axe_x =question("Entrer le titre de l'axe des x :",type(''))
-    #axe_y = question("Entrer le titre de l'axe des y :",type(''))
-    
     
     plt.plot(tableaux[_arg[0]][int(header)+1:,int(x)].astype(float), tableaux[_arg[0]][int(header)+1:,int(y)].astype(float))
     plt.xlabel(tableaux[_arg[0]][int(header):,int(x)])
@@ -91,7 +80,9 @@ def ploter_tableau(*_arg,header=0,x=0,y=1):
     #nom_graph = question("Entrer le nom du graphique :",type(''))
     #plt.savefig(nom_graph+'.png')               #Enregitre une image <<PNG>> du graphique
     plt.show()                                  #Affiche le graphique
-
+def insert_droit(*arg):
+    nom_tableau=arg[0]
+    tableaux[nom_tableau]=np.concatenate((tableaux[nom_tableau][:arg[1],:],np.empty((len(tableaux[nom_tableau][:,0]),1),dtype=object),tableaux[nom_tableau][arg[1]:,:]),axis=1)
 def afficher_variables():
     """Permet d'afficher toutes les tableaux en mémoire dans le projet courant"""
     for cle in tableaux.keys():
