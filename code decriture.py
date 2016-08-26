@@ -82,7 +82,8 @@ def ploter_tableau(*_arg,header=0,x=0,y=1):
     plt.show()                                  #Affiche le graphique
 def insert_droit(*arg):
     nom_tableau=arg[0]
-    tableaux[nom_tableau]=np.concatenate((tableaux[nom_tableau][:arg[1],:],np.empty((len(tableaux[nom_tableau][:,0]),1),dtype=object),tableaux[nom_tableau][arg[1]:,:]),axis=1)
+    tableaux[nom_tableau]=np.concatenate((tableaux[nom_tableau][:,:int(arg[1])+1],np.empty((len(tableaux[nom_tableau][:,0]),1),dtype=object),tableaux[nom_tableau][:,int(arg[1])+1:]),axis=1)
+    print("colonne insérée")
 def afficher_variables():
     """Permet d'afficher toutes les tableaux en mémoire dans le projet courant"""
     for cle in tableaux.keys():
@@ -94,13 +95,22 @@ def afficher_tab(*lvar):
             c+=[0]
         for r in tableaux[lvar[0]]:
             for l in range(len(r)):
-                if len(r[l])>c[l]:
-                    c[l]=len(r[l])
+                h=0
+                if r[l]==None:
+                    h=4
+                else:
+                    h=len(r[l])
+                if h>c[l]:
+                    c[l]=h
         for r in tableaux[lvar[0]]:
             print('-'*(sum(c)+len(c)+1))
             for l in range(len(r)):
+                try:
+                    h=len(r[l])
+                except TypeError:
+                   h=4 
                 print('|',r[l],end='',sep='')
-                a=c[l]-len(r[l])
+                a=c[l]-h
                 print(' '*a,end='')
             print('|')
         print('-'*(sum(c)+len(c)+1))
@@ -362,6 +372,7 @@ def main():
         'IMP_TAB':importer_tab,
         'EXP_TAB':exporter_tableau,
         'PLOT_TAB':ploter_tableau,
+        'INS_DROIT':insert_droit,
         'EE':entete
         }
     commande= input("Que voulez-vous faire (E: Ecrire un fichier, L: Lire un fichier, G: tracer de graphique, A: aide, Q: arret du programme): ")
