@@ -84,6 +84,10 @@ def insert_droit(*arg):
     nom_tableau=arg[0]
     tableaux[nom_tableau]=np.concatenate((tableaux[nom_tableau][:,:int(arg[1])+1],np.empty((len(tableaux[nom_tableau][:,0]),1),dtype=object),tableaux[nom_tableau][:,int(arg[1])+1:]),axis=1)
     print("colonne insérée")
+def insert_gauche(*arg):
+    nom_tableau=arg[0]
+    tableaux[nom_tableau]=np.concatenate((tableaux[nom_tableau][:,:int(arg[1])],np.empty((len(tableaux[nom_tableau][:,0]),1),dtype=object),tableaux[nom_tableau][:,int(arg[1]):]),axis=1)
+    print("colonne insérée")
 def afficher_variables():
     """Permet d'afficher toutes les tableaux en mémoire dans le projet courant"""
     for cle in tableaux.keys():
@@ -373,6 +377,7 @@ def main():
         'EXP_TAB':exporter_tableau,
         'PLOT_TAB':ploter_tableau,
         'INS_DROIT':insert_droit,
+        'INS_GAU':insert_gauche,
         'EE':entete
         }
     commande= input("Que voulez-vous faire (E: Ecrire un fichier, L: Lire un fichier, G: tracer de graphique, A: aide, Q: arret du programme): ")
