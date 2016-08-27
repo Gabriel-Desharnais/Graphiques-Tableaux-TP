@@ -61,6 +61,8 @@ def question(question_a_afficher,type_de_donnees,compteur=2,limites=-1,default='
         if limites == 0:
             #Ici un jour on devrait ajouter de quoi qui permet d'envoyer la valeur par défaut au lieu de juste annuler
             raise Exception("Annulation du procéssus (nombre limites de tentatives atteinte)")
+def incertitude(*arg):
+    tableauxpm[arg[0]][arg[1]]+=[arg[2],]
 def importer_tab(*arg):
     if(len(arg)<3):
         arg=list(arg)+[",",]
@@ -124,7 +126,9 @@ def supprimer_variable(*lvar):
         lvar=question("quelle variable voulez-vous supprimer? ",type('')).split()
     if lvar[0]=='ALL':
         global tableaux
+        global nom_tableau
         tableaux={}
+        nom_tableau={}
     else:
         for var in lvar:
             if var in tableaux:
@@ -155,7 +159,7 @@ def creer_tableau(*arg):
     
     #Création d'un tableau numpy pouvant contenir des chaines de charactères et étant du bon format
     tableaux[nom_tableau]=np.empty((lignes,colonnes),dtype=object)
-    
+    tableauxpm[nom_tableau]={}
     
     return nom_tableau
 
@@ -378,6 +382,7 @@ def main():
         'PLOT_TAB':ploter_tableau,
         'INS_DROIT':insert_droit,
         'INS_GAU':insert_gauche,
+        'INCERTITUDE':incertitude,
         'EE':entete
         }
     commande= input("Que voulez-vous faire (E: Ecrire un fichier, L: Lire un fichier, G: tracer de graphique, A: aide, Q: arret du programme): ")
@@ -396,5 +401,6 @@ def main():
         print("Vous avez donnez la mauvaise quantité d'argument à la fonction",e)
     main()
 tableaux = {}
+tableauxpm = {}
 if __name__ == '__main__':
   main()   
