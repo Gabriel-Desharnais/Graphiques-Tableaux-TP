@@ -315,7 +315,6 @@ def lecture():
 
 #Tracer de graphique
 def graphique():
-
     nom_doc = question("Entrez le nom complet (avec l'extension) du fichier dont vous voulez faire un graphique :",type(''))
 
     gd = open(nom_doc, 'r')
@@ -350,7 +349,7 @@ def aide():
     print("Ce programme permet à l'utilisateur d'importer les données de différentes manières et d'en faire des tableaux ou des graphiques \n")
     print("afin de créer un tableau et de l'exporter, choisisez l'option 'E' dans le menu principal. Il vous faudra ensuite entrez les données manuellement")
     print("Pour Importer vos données depuis un fichier: choisisez l'option 'L' dans le menu principal")
-    print("Pour afficher tous les tableaux en mémoire dans le projet courant «AFF_VARS»")
+    print("Pour afficher tous les tableaux en mémoire dans le projet courant «LIST_TABS»")
     print("Pour supprimer un tableau de la mémoire dans le projet courant «SUP_VAR»")
     print("Pour créer un tableau «NOUV_TAB»")
     print("Pour transcrire toutes vos donnée manuellement vers un tableau «REMP_TAB»")
@@ -400,6 +399,8 @@ def main():
     except TypeError as e:
         print("Vous avez donnez la mauvaise quantité d'argument à la fonction",e)
     main()
+
+
 tableaux = {}
 tableauxpm = {}
 if __name__ == '__main__':
