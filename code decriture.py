@@ -16,6 +16,10 @@ from matplotlib import pyplot as plt
 import sys
 import unicodedata
 VERSION="0.0.0.0.0.0.4"
+def formater(string):
+    if (all(item in '0123456789.' for item in string)):
+        string=string.replace('.',',')
+    return string
 def question(question_a_afficher,type_de_donnees,compteur=2,limites=-1,default=''):
     """Cette fonction permet d'éffectuer une requête d'entrée à l'instar de <<input>>
     sauf qu'elle retourne la réponse dans le type demandé en argument. Elle permet
@@ -115,7 +119,7 @@ def afficher_tab(*lvar):
                     h=len(r[l])
                 except TypeError:
                    h=4 
-                print('|',r[l],end='',sep='')
+                print('|',formater(r[l]),end='',sep='')
                 a=c[l]-h
                 print(' '*a,end='')
             print('|')
@@ -162,7 +166,6 @@ def creer_tableau(*arg):
     tableauxpm[nom_tableau]={}
     
     return nom_tableau
-
 def importer_donnees_man(nom_tableau):
     #On devrait ajouter un truc qui vérifie si <<nom_tableau>> existe dans <<tableaux>>
     #if nom_tableau in tableaux:
@@ -178,7 +181,6 @@ def importer_donnees_man(nom_tableau):
             tableaux[nom_tableau][l,c]=question("Entrez la valeur "+str(l)+" de la colonne "+tableaux[nom_tableau][0,c]+": ",type(''))
     
     return nom_tableau
-    
 def exporter_tableau(*arg):
     if len(arg)<1:
         print("Erreur. Veuillez fournir les arguments demmandés. Utillisez la fonction «AIDE» pour plus d'information" )
@@ -228,7 +230,6 @@ def exporter_tableau(*arg):
     
     
     return arg[0]
-
 def entete(lignes,colonnes):
     print("Bienvenue dans l'assitant de création d'entête.")
     print("Votre tableau à",lignes,"lignes et",colonnes,"colones (Incluant la ligne de nom des colonnes)")
@@ -263,7 +264,7 @@ def export_html(tab):
     for r in tab:
         fichier+="\t<tr>\n"
         for e in r:
-            fichier+="\t\t<th>"+e+"</th>\n"
+            fichier+="\t\t<th>"+formater(e)+"</th>\n"
         fichier+="\t</tr>\n"
     fichier+="</table>"
     return fichier
@@ -278,7 +279,7 @@ def export_md(tab):
     for l in tab[1:,:]:
         fichier+="\n|"
         for r in l:
-            fichier+=r+"|"
+            fichier+=formater(r)+"|"
     return fichier
 def export_tex(tab):
     fichier="\\begin{tabular}{|"
@@ -291,14 +292,13 @@ def export_tex(tab):
     for l in tab:
         #faire toutes les colonnes sauf la dernière
         for r in range(b-1):
-            fichier+=str(l[r])+'&'
+            fichier+=formater(str(l[r]))+'&'
         fichier+=str(l[b-1])+"\\\\\n"
     fichier+="\\hline\n\\end{tabular}"
     #entete(lignes,colonnes)
     return fichier
 def ecriture ():
     exporter_tableau(importer_donnees_man(creer_tableau()))
-
 #Lecture d'une fichier
 def lecture():
     print("Vous ne pouvez ouvrir que des fichier txt ou sans extensions avec ce programme")
@@ -312,7 +312,6 @@ def lecture():
     
     if graph.upper() == 'O':
         graphique()
-
 #Tracer de graphique
 def graphique():
     nom_doc = question("Entrez le nom complet (avec l'extension) du fichier dont vous voulez faire un graphique :",type(''))
@@ -341,8 +340,6 @@ def graphique():
     nom_graph = question("Entrer le nom du graphique :",type(''))
     plt.savefig(nom_graph+'.png')               #Enregitre une image <<PNG>> du graphique
     plt.show()                                  #Affiche le graphique
-
-
 def aide():
     print("Ceci est le menu d'aide\n")
     print("La version du logiciel: ",VERSION,"\n")
@@ -357,10 +354,8 @@ def aide():
     print("Pour importer un tableau depuis un fichier «IMP_TAB»")
     print("Pour afficher un graphique «PLOT_TAB»")
     print("Pour affciher un tableau «AFF_TAB»")
-    
 def quiter():
     exit()
-
 def langue(*arg):
     global lalangue
     if (len(arg)<1):
@@ -372,7 +367,6 @@ def langue(*arg):
             print("La langue est maintenant:", lalangue)
         else:
             print("«",arg[0].upper(),"»","n'est pas un format supporté")
-            
 #main, choix entre les différentes options
 def main():
     #Créer le menu à l'aide d'un dictionnaire qui contient les fonctions
@@ -412,8 +406,6 @@ def main():
     except TypeError as e:
         print("Vous avez donnez la mauvaise quantité d'argument à la fonction",e)
     main()
-
-
 tableaux = {}
 tableauxpm = {}
 lalangue="FR"
