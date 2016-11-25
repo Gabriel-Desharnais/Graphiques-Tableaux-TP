@@ -15,7 +15,7 @@ from scipy.optimize import curve_fit
 from matplotlib import pyplot as plt
 import sys
 import unicodedata
-VERSION="0.0.0.0.0.0.3"
+VERSION="0.0.0.0.0.0.4"
 def question(question_a_afficher,type_de_donnees,compteur=2,limites=-1,default=''):
     """Cette fonction permet d'éffectuer une requête d'entrée à l'instar de <<input>>
     sauf qu'elle retourne la réponse dans le type demandé en argument. Elle permet
@@ -361,6 +361,18 @@ def aide():
 def quiter():
     exit()
 
+def langue(*arg):
+    global lalangue
+    if (len(arg)<1):
+        print("La langue est:",lalangue)
+    else:
+        if(arg[0].upper() in ["FR","EN"]):
+            print("La langue était:",lalangue)
+            lalangue=arg[0].upper()
+            print("La langue est maintenant:", lalangue)
+        else:
+            print("«",arg[0].upper(),"»","n'est pas un format supporté")
+            
 #main, choix entre les différentes options
 def main():
     #Créer le menu à l'aide d'un dictionnaire qui contient les fonctions
@@ -382,6 +394,7 @@ def main():
         'INS_DROIT':insert_droit,
         'INS_GAU':insert_gauche,
         'INCERTITUDE':incertitude,
+        'LANGUE':langue,
         'EE':entete
         }
     commande= input("Que voulez-vous faire (E: Ecrire un fichier, L: Lire un fichier, G: tracer de graphique, A: aide, Q: arret du programme): ")
@@ -403,5 +416,6 @@ def main():
 
 tableaux = {}
 tableauxpm = {}
+lalangue="FR"
 if __name__ == '__main__':
   main()   
